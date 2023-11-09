@@ -1,0 +1,21 @@
+{
+  "Items": [
+    {
+      "OrderId": "2c1f5682-8cbc-4846-9644-74063f9a2531",
+      "OrderedProduct": [
+        {
+          "ID": 1,
+          "Name": "phone",
+          "Amount": 10000,
+          "Description": "android",
+          "IsAvailable": true,
+          "Quantity": 10
+        }
+      ],
+      "Total_Amount": 100000,
+      "description": "handle with care",
+      "OrderDate": "2023-11-09T17:09:04.4257465+05:30",
+      "isProcessed": true
+    }
+  ]
+}
