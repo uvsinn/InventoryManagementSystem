@@ -56,6 +56,7 @@ namespace InventoryManagementSystem.Controllers
             Product prd = inventory.Products.FirstOrDefault(p => p.ID == id);
             if (prd != null)
             {
+                prd.ID = product.ID;
                 prd.Name = product.Name;
                 prd.Amount = product.Amount;
                 prd.Description = product.Description;

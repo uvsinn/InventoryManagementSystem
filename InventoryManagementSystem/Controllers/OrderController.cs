@@ -21,6 +21,7 @@ namespace InventoryManagementSystem.Controllers
         //GET
         [HttpGet]
         public Orderlist GetOrder()
+
         {
             Orderlist OrderList = orderManager.LoadOrders();
             return OrderList;
