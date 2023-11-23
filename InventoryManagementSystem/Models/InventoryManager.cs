@@ -10,22 +10,31 @@ namespace InventoryManagementSystem.Models
 
         public void SaveInventory(Inventory inventory)
         {
-            string jsonString = JsonSerializer.Serialize(inventory);
-            File.WriteAllText(filename, jsonString);
+            try
+            {
+                string jsonString = JsonSerializer.Serialize(inventory);
+                File.WriteAllText(filename, jsonString);
+            }
+            catch(FileNotFoundException)
+            {
+                Console.WriteLine("Create a file and then save the data");
+            }
         }
         public Inventory LoadInventory()
         {
-            if (File.Exists(filename))
+            try
             {
                 string jsonString = File.ReadAllText(filename);
                 Inventory inventory = JsonSerializer.Deserialize<Inventory>(jsonString)!;
 
                 return inventory;
             }
-            else
+            catch(FileNotFoundException)
             {
+                Console.WriteLine("Create a file and then Load the data");
                 return new Inventory();
             }
+            
         }
     }
 }

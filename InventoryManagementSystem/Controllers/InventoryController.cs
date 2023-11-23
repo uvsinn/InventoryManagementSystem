@@ -30,46 +30,58 @@ namespace InventoryManagementSystem.Controllers
         [HttpPost]
         public void AddProductToInventory(Product product)
         {
-            Inventory inventory = inventoryManager.LoadInventory();
-            Product prd = inventory.Products.FirstOrDefault(p => p.ID == product.ID);
-            if (prd != null)
+            try
             {
-                Console.WriteLine("A product with same id already exist");
-                return;
+                Inventory inventory = inventoryManager.LoadInventory();
+                Product prd = inventory.Products.FirstOrDefault(p => p.ID == product.ID);
+
+                inventory.Products.Add(product);
+                inventoryManager.SaveInventory(inventory);
             }
-            inventory.Products.Add(product);
-            inventoryManager.SaveInventory(inventory);
+            catch(NullReferenceException NRE)
+            {
+                Console.WriteLine("A Product with same ID already exists in inventory");
+            }
         }
 
         //PUT: api/Product/1001
         [HttpPut]
         public void UpdateProduct(int id, [FromBody] Product product)
         {
-            Inventory inventory = inventoryManager.LoadInventory();
-            Product prd = inventory.Products.FirstOrDefault(p => p.ID == id);
-            if (prd != null)
+            try
             {
+                Inventory inventory = inventoryManager.LoadInventory();
+                Product? prd = inventory.Products.FirstOrDefault(p => p.ID == id);
+
                 prd.ID = product.ID;
                 prd.Name = product.Name;
                 prd.Amount = product.Amount;
                 prd.Description = product.Description;
                 prd.IsAvailable = product.IsAvailable;
                 prd.Quantity = product.Quantity;
+                inventoryManager.SaveInventory(inventory);
             }
-            inventoryManager.SaveInventory(inventory);
+            catch (NullReferenceException NRE)
+            {
+                Console.WriteLine("No such Product Exists in Inventory");
+            }
         }
         //DELETE: api/Product/1001
         [HttpDelete]
         public void DeleteProductFromInventory(int id)
         {
-            Inventory inventory = inventoryManager.LoadInventory();
-            Product prd = inventory.Products.FirstOrDefault(p => p.ID == id);
-            if (prd == null)
+            try
             {
-                Console.WriteLine("NO such product exists");
+                Inventory inventory = inventoryManager.LoadInventory();
+                Product prd = inventory.Products.FirstOrDefault(p => p.ID == id);
+                
+                inventory.Products.Remove(prd);
+                inventoryManager.SaveInventory(inventory);
             }
-            inventory.Products.Remove(prd);
-            inventoryManager.SaveInventory(inventory);
+            catch(NullReferenceException NRE)
+            {
+                Console.WriteLine("No such Product Exists in Inventory");
+            } 
         }
     }
 }

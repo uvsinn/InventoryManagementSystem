@@ -7,22 +7,36 @@ namespace InventoryManagementSystem.Models
     {
         public void SaveOrders(Orderlist OrderList)
         {
-            string OrderFileName = "OrderHistory.json";
-            string jsonString = JsonSerializer.Serialize(OrderList, new JsonSerializerOptions
+            try
             {
-                WriteIndented = true,
-                
-            });
-            File.WriteAllText(OrderFileName, jsonString);
+                string OrderFileName = "OrderHistory.json";
+                string jsonString = JsonSerializer.Serialize(OrderList, new JsonSerializerOptions
+                {
+                    WriteIndented = true,
+
+                });
+                File.WriteAllText(OrderFileName, jsonString);
+            }
+            catch(FileNotFoundException)
+            {
+                Console.WriteLine("Create a file and then save the data");
+            }
         }
         public Orderlist LoadOrders()
         {
-            string OrderFileName = "OrderHistory.json";
+            try
+            {
+                string OrderFileName = "OrderHistory.json";
 
-            string jsonString = File.ReadAllText(OrderFileName);
-            Orderlist OrderList = JsonSerializer.Deserialize<Orderlist>(jsonString);
-
-            return OrderList;
+                string jsonString = File.ReadAllText(OrderFileName);
+                Orderlist OrderList = JsonSerializer.Deserialize<Orderlist>(jsonString);
+                return OrderList;
+            }
+            catch(FileNotFoundException)
+            {
+                Console.WriteLine("Create a file and then Load the data");
+                return new Orderlist();
+            }            
         }
     }
 }
