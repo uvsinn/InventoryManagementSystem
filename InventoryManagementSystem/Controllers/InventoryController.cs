@@ -14,18 +14,11 @@ namespace InventoryManagementSystem.Controllers
             inventoryManager = new InventoryManager();
         }
 
-        // GET: InventoryManagement
         [HttpGet]
-        //public List<Product> Get()
-        //{
-        //    Inventory inventory = inventoryManager.LoadInventory();
-
-        //    return inventory.Products;
-        //}
-
+        
         //GET: api/Product/1001
 
-        public Inventory Get()
+        public Inventory ShowInventoryProducts()
         {
             Inventory inventory = inventoryManager.LoadInventory();
             
@@ -35,7 +28,7 @@ namespace InventoryManagementSystem.Controllers
 
         //POST: api/Product
         [HttpPost]
-        public void Post(Product product)
+        public void AddProductToInventory(Product product)
         {
             Inventory inventory = inventoryManager.LoadInventory();
             Product prd = inventory.Products.FirstOrDefault(p => p.ID == product.ID);
@@ -50,7 +43,7 @@ namespace InventoryManagementSystem.Controllers
 
         //PUT: api/Product/1001
         [HttpPut]
-        public void Put(int id, [FromBody] Product product)
+        public void UpdateProduct(int id, [FromBody] Product product)
         {
             Inventory inventory = inventoryManager.LoadInventory();
             Product prd = inventory.Products.FirstOrDefault(p => p.ID == id);
@@ -67,7 +60,7 @@ namespace InventoryManagementSystem.Controllers
         }
         //DELETE: api/Product/1001
         [HttpDelete]
-        public void Delete(int id)
+        public void DeleteProductFromInventory(int id)
         {
             Inventory inventory = inventoryManager.LoadInventory();
             Product prd = inventory.Products.FirstOrDefault(p => p.ID == id);

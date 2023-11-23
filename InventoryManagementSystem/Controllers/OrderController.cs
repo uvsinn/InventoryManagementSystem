@@ -20,7 +20,7 @@ namespace InventoryManagementSystem.Controllers
 
         //GET
         [HttpGet]
-        public Orderlist GetOrder()
+        public Orderlist ShowOrderList()
 
         {
             Orderlist OrderList = orderManager.LoadOrders();
@@ -31,7 +31,7 @@ namespace InventoryManagementSystem.Controllers
 
         //PUT
         [HttpPut]
-        public void PutOrder(Guid id, [FromBody] Order order)
+        public void UpdateAnOrder(Guid id, [FromBody] Order order)
         {
             //Loading inventory and orders from json file
             Orderlist OrderList = orderManager.LoadOrders();
@@ -92,7 +92,7 @@ namespace InventoryManagementSystem.Controllers
 
         //POST
         [HttpPost]
-        public void PostOrder([FromBody] Order order)
+        public void PlaceAnOrder([FromBody] Order order)
         {
             //Loading inventory and orders from json file
 
@@ -146,7 +146,7 @@ namespace InventoryManagementSystem.Controllers
 
         //DELETE
         [HttpDelete]
-        public void DeleteOrder(Guid id)
+        public void DeleteAnOrder(Guid id)
         {
             //Loading orders from json file
             Orderlist OrderList = orderManager.LoadOrders();

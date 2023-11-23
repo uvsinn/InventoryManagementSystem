@@ -54,29 +54,13 @@ namespace InventoryManagement.Tests.Controllers
 
         }
 
-        //public void Get_ReturnsInventory()
-        //{
-        //    // Arrange
-
-        //    // Act
-        //    var result = _controller.Get();
-
-        //    // Assert
-        //    Assert.IsNotNull(result);
-        //    Assert.AreEqual(200, result.StatusCode);
-
-        //    var inventory = result.Value as Inventory;
-        //    Assert.IsNotNull(inventory);
-        //    // Add more assertions as needed
-        //}
-
         [Test]
         public void Get_LoadProductsFromInventory()
         {
             // Arrange
             _inventory=_manager.LoadInventory();
             // Act
-            Inventory TestInventory= _controller.Get();
+            Inventory TestInventory= _controller.ShowInventoryProducts();
 
             // Assert
             Assert.IsNotNull(TestInventory);
@@ -88,7 +72,7 @@ namespace InventoryManagement.Tests.Controllers
             // Arrange
             
             // Act
-            _controller.Post(product2);
+            _controller.AddProductToInventory(product2);
 
             // Assert
             _inventory = _manager.LoadInventory();
@@ -98,7 +82,6 @@ namespace InventoryManagement.Tests.Controllers
         }
 
         [Test]
-        //[TestCaseSource(nameof (PostProductTestCases))]
         [TestCase(1001)]
 
         public void Put_UpdatesProductInInventory(int productId)
@@ -106,7 +89,7 @@ namespace InventoryManagement.Tests.Controllers
             // Arrange
                         
             // Act
-            _controller.Put(productId, product1);
+            _controller.UpdateProduct(productId, product1);
 
             // Assert
             _inventory = _manager.LoadInventory();
@@ -129,7 +112,7 @@ namespace InventoryManagement.Tests.Controllers
             // Arrange
 
             // Act
-            _controller.Delete(productId);
+            _controller.DeleteProductFromInventory(productId);
 
             // Assert
             _inventory = _manager.LoadInventory();
@@ -138,26 +121,6 @@ namespace InventoryManagement.Tests.Controllers
             var testProduct =_inventory.Products.Find(p => p.ID == productId);
             Assert.IsNull(testProduct,"Product Successfully Deleted");
         }
-
-
-
-
-
-        //private static IEnumerable<object[]> PostProductTestCases()
-        //{
-
-        //    yield return new object[]
-        //    {
-        //        1001,
-        //        new object[]
-        //        {
-        //            new {ID = 1001,Name = "Phone",Amount = 10000,Description = "IPHONE",IsAvailable = true,Quantity = 80 }
-        //         }
-        //    };
-            
-        //}
-
-
 
     }
 }
