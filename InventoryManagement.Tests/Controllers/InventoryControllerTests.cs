@@ -19,14 +19,14 @@ namespace InventoryManagement.Tests.Controllers
     {
         private InventoryController _controller;
         private Inventory _inventory;
-        private InventoryManager _manager;
+        private Manager<Inventory> _manager;
         Product product1;
         Product product2;
         [SetUp]
         public void Setup()
         {
             _controller = new InventoryController();
-            _manager= new InventoryManager();
+            _manager= new Manager<Inventory>();
             _inventory = new Inventory();
             
             //for POST
@@ -58,7 +58,7 @@ namespace InventoryManagement.Tests.Controllers
         public void Get_LoadProductsFromInventory()
         {
             // Arrange
-            _inventory=_manager.LoadInventory();
+            _inventory=_manager.Load();
             // Act
             Inventory TestInventory= _controller.ShowInventoryProducts();
 
@@ -75,7 +75,7 @@ namespace InventoryManagement.Tests.Controllers
             _controller.AddProductToInventory(product2);
 
             // Assert
-            _inventory = _manager.LoadInventory();
+            _inventory = _manager.Load();
             Assert.IsNotNull(_inventory);
             var testproduct=_inventory.Products.FirstOrDefault(p=>p.ID==product2.ID);
             Assert.IsNotNull(testproduct,"Product added successfully");
@@ -92,7 +92,7 @@ namespace InventoryManagement.Tests.Controllers
             _controller.UpdateProduct(productId, product1);
 
             // Assert
-            _inventory = _manager.LoadInventory();
+            _inventory = _manager.Load();
             Assert.IsNotNull(_inventory);
 
             var TestProduct=_inventory.Products.FirstOrDefault(p=>p.ID== product1.ID);
@@ -115,7 +115,7 @@ namespace InventoryManagement.Tests.Controllers
             _controller.DeleteProductFromInventory(productId);
 
             // Assert
-            _inventory = _manager.LoadInventory();
+            _inventory = _manager.Load();
             Assert.IsNotNull(_inventory,"Inventory ins not NULL");
 
             var testProduct =_inventory.Products.Find(p => p.ID == productId);

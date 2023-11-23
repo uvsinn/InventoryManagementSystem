@@ -4,9 +4,5 @@
     {
         public List<Product>? Products { get; set; }
 
-        //public Inventory()
-        //{
-        //    Products = new List<Product>();
-        //}
     }
 }

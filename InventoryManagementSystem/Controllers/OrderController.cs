@@ -8,12 +8,12 @@ namespace InventoryManagementSystem.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        public OrderManager orderManager;
-        public InventoryManager inventoryManager;
+        public Manager<Orderlist> orderManager;
+        public Manager<Inventory> inventoryManager;
         public OrderController()
         {
-            orderManager = new OrderManager();
-            inventoryManager = new InventoryManager();
+            orderManager = new Manager<Orderlist>();
+            inventoryManager = new Manager<Inventory>();
         }
 
         //GET
@@ -21,7 +21,7 @@ namespace InventoryManagementSystem.Controllers
         public Orderlist ShowOrderList()
 
         {
-            Orderlist OrderList = orderManager.LoadOrders();
+            Orderlist OrderList = orderManager.Load();
             return OrderList;
         }
 
@@ -32,8 +32,8 @@ namespace InventoryManagementSystem.Controllers
             try
             {
                 //Loading inventory and orders from json file
-                Orderlist OrderList = orderManager.LoadOrders();
-                Inventory inventory = inventoryManager.LoadInventory();
+                Orderlist OrderList = orderManager.Load();
+                Inventory inventory = inventoryManager.Load();
 
                 //Running a check on the list of orders to check weather the required product exists in the list or not
 
@@ -80,8 +80,8 @@ namespace InventoryManagementSystem.Controllers
 
                 ord.OrderedProduct = order.OrderedProduct;
                 ord.Total_Amount = total;
-                orderManager.SaveOrders(OrderList);
-                inventoryManager.SaveInventory(inventory);
+                orderManager.Save(OrderList);
+                inventoryManager.Save(inventory);
             }
             catch(NullReferenceException NRE)
             {
@@ -97,8 +97,8 @@ namespace InventoryManagementSystem.Controllers
         {
             //Loading inventory and orders from json file
 
-            Inventory inventory = inventoryManager.LoadInventory();
-            Orderlist OrderList = orderManager.LoadOrders();
+            Inventory inventory = inventoryManager.Load();
+            Orderlist OrderList = orderManager.Load();
 
             //Storing the products of placed order in temp to run a check whether those products actually exist in the inventory or not
 
@@ -144,8 +144,8 @@ namespace InventoryManagementSystem.Controllers
             OrderList.Items.Add(order);
 
             //Saving inventory and orders to json file
-            inventoryManager.SaveInventory(inventory);
-            orderManager.SaveOrders(OrderList);
+            inventoryManager.Save(inventory);
+            orderManager.Save(OrderList);
         }
 
 
@@ -157,8 +157,8 @@ namespace InventoryManagementSystem.Controllers
             try
             {
                 //Loading orders from json file
-                Orderlist OrderList = orderManager.LoadOrders();
-                Inventory inventory = inventoryManager.LoadInventory();
+                Orderlist OrderList = orderManager.Load();
+                Inventory inventory = inventoryManager.Load();
 
                 //Searching the reqired order through the list of orders to perform the delete operation
                 Order ord = OrderList.Items.FirstOrDefault(o => o.OrderId == id);
@@ -176,8 +176,8 @@ namespace InventoryManagementSystem.Controllers
                 OrderList.Items.Remove(ord);
 
                 //Updating orders to json file
-                orderManager.SaveOrders(OrderList);
-                inventoryManager.SaveInventory(inventory);
+                orderManager.Save(OrderList);
+                inventoryManager.Save(inventory);
             }
             catch (NullReferenceException)
             {

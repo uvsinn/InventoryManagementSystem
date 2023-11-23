@@ -8,10 +8,10 @@ namespace InventoryManagementSystem.Controllers
     [ApiController]
     public class InventoryController : ControllerBase
     {
-        private InventoryManager inventoryManager;
+        private Manager<Inventory> manager;
         public InventoryController()
         {
-            inventoryManager = new InventoryManager();
+            manager = new Manager<Inventory>();
         }
 
         [HttpGet]
@@ -20,7 +20,7 @@ namespace InventoryManagementSystem.Controllers
 
         public Inventory ShowInventoryProducts()
         {
-            Inventory inventory = inventoryManager.LoadInventory();
+            Inventory inventory = manager.Load();
             
             return inventory;
 
@@ -32,11 +32,11 @@ namespace InventoryManagementSystem.Controllers
         {
             try
             {
-                Inventory inventory = inventoryManager.LoadInventory();
+                Inventory inventory = manager.Load();
                 Product prd = inventory.Products.FirstOrDefault(p => p.ID == product.ID);
 
                 inventory.Products.Add(product);
-                inventoryManager.SaveInventory(inventory);
+                manager.Save(inventory);
             }
             catch(NullReferenceException NRE)
             {
@@ -50,7 +50,7 @@ namespace InventoryManagementSystem.Controllers
         {
             try
             {
-                Inventory inventory = inventoryManager.LoadInventory();
+                Inventory inventory = manager.Load();
                 Product? prd = inventory.Products.FirstOrDefault(p => p.ID == id);
 
                 prd.ID = product.ID;
@@ -59,7 +59,7 @@ namespace InventoryManagementSystem.Controllers
                 prd.Description = product.Description;
                 prd.IsAvailable = product.IsAvailable;
                 prd.Quantity = product.Quantity;
-                inventoryManager.SaveInventory(inventory);
+                manager.Save(inventory);
             }
             catch (NullReferenceException NRE)
             {
@@ -72,11 +72,11 @@ namespace InventoryManagementSystem.Controllers
         {
             try
             {
-                Inventory inventory = inventoryManager.LoadInventory();
+                Inventory inventory = manager.Load();
                 Product prd = inventory.Products.FirstOrDefault(p => p.ID == id);
                 
                 inventory.Products.Remove(prd);
-                inventoryManager.SaveInventory(inventory);
+                manager.Save(inventory);
             }
             catch(NullReferenceException NRE)
             {
