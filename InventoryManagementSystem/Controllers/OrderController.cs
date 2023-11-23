@@ -8,7 +8,6 @@ namespace InventoryManagementSystem.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-
         public OrderManager orderManager;
         public InventoryManager inventoryManager;
         public OrderController()

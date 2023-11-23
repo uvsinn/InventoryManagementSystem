@@ -2,11 +2,11 @@
 {
     public class Inventory
     {
-        public List<Product> Products { get; set; }
+        public List<Product>? Products { get; set; }
 
-        public Inventory()
-        {
-            Products = new List<Product>();
-        }
+        //public Inventory()
+        //{
+        //    Products = new List<Product>();
+        //}
     }
 }
