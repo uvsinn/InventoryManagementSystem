@@ -8,7 +8,7 @@ namespace InventoryManagementSystem.Models
     {
         public string? filename;
 
-        public void Save(T ToBeSaved)
+        public async Task Save(T ToBeSaved)
         {
             if (typeof(T).ToString() == "InventoryManagementSystem.Models.Inventory")
             {
@@ -29,9 +29,8 @@ namespace InventoryManagementSystem.Models
                 Console.WriteLine("Create a file and then save the data");
             }
         }
-        public T Load()
+        public async Task<T> Load()
         {
-            T temp;
 
             if (typeof(T).ToString() == "InventoryManagementSystem.Models.Inventory")
             {

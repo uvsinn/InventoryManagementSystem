@@ -18,9 +18,9 @@ namespace InventoryManagementSystem.Controllers
         
         //GET: api/Product/1001
 
-        public Inventory ShowInventoryProducts()
+        public async Task<Inventory> ShowInventoryProducts()
         {
-            Inventory inventory = manager.Load();
+             Inventory inventory = await manager.Load();
             
             return inventory;
 
@@ -28,11 +28,11 @@ namespace InventoryManagementSystem.Controllers
 
         //POST: api/Product
         [HttpPost]
-        public void AddProductToInventory(Product product)
+        public async Task AddProductToInventory(Product product)
         {
             try
             {
-                Inventory inventory = manager.Load();
+                Inventory inventory = await manager.Load();
                 Product prd = inventory.Products.FirstOrDefault(p => p.ID == product.ID);
 
                 inventory.Products.Add(product);
@@ -46,11 +46,11 @@ namespace InventoryManagementSystem.Controllers
 
         //PUT: api/Product/1001
         [HttpPut]
-        public void UpdateProduct(int id, [FromBody] Product product)
+        public async Task UpdateProduct(int id, [FromBody] Product product)
         {
             try
             {
-                Inventory inventory = manager.Load();
+                Inventory inventory = await manager.Load();
                 Product? prd = inventory.Products.FirstOrDefault(p => p.ID == id);
 
                 prd.ID = product.ID;
@@ -68,11 +68,11 @@ namespace InventoryManagementSystem.Controllers
         }
         //DELETE: api/Product/1001
         [HttpDelete]
-        public void DeleteProductFromInventory(int id)
+        public async Task DeleteProductFromInventory(int id)
         {
             try
             {
-                Inventory inventory = manager.Load();
+                Inventory inventory = await manager.Load();
                 Product prd = inventory.Products.FirstOrDefault(p => p.ID == id);
                 
                 inventory.Products.Remove(prd);

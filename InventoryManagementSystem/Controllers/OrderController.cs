@@ -18,22 +18,22 @@ namespace InventoryManagementSystem.Controllers
 
         //GET
         [HttpGet]
-        public Orderlist ShowOrderList()
+        public async Task<Orderlist> ShowOrderList()
 
         {
-            Orderlist OrderList = orderManager.Load();
+            Orderlist OrderList = await orderManager.Load();
             return OrderList;
         }
 
         //PUT
         [HttpPut]
-        public void UpdateAnOrder(Guid id, [FromBody] Order order)
+        public async Task UpdateAnOrder(Guid id, [FromBody] Order order)
         {
             try
             {
                 //Loading inventory and orders from json file
-                Orderlist OrderList = orderManager.Load();
-                Inventory inventory = inventoryManager.Load();
+                Orderlist OrderList = await orderManager.Load();
+                Inventory inventory = await inventoryManager.Load();
 
                 //Running a check on the list of orders to check weather the required product exists in the list or not
 
@@ -93,12 +93,12 @@ namespace InventoryManagementSystem.Controllers
 
         //POST
         [HttpPost]
-        public void PlaceAnOrder([FromBody] Order order)
+        public async Task PlaceAnOrder([FromBody] Order order)
         {
             //Loading inventory and orders from json file
 
-            Inventory inventory = inventoryManager.Load();
-            Orderlist OrderList = orderManager.Load();
+            Inventory inventory = await inventoryManager.Load();
+            Orderlist OrderList = await orderManager.Load();
 
             //Storing the products of placed order in temp to run a check whether those products actually exist in the inventory or not
 
@@ -152,13 +152,13 @@ namespace InventoryManagementSystem.Controllers
 
         //DELETE
         [HttpDelete]
-        public void DeleteAnOrder(Guid id)
+        public async Task DeleteAnOrder(Guid id)
         {
             try
             {
                 //Loading orders from json file
-                Orderlist OrderList = orderManager.Load();
-                Inventory inventory = inventoryManager.Load();
+                Orderlist OrderList = await orderManager.Load();
+                Inventory inventory = await inventoryManager.Load();
 
                 //Searching the reqired order through the list of orders to perform the delete operation
                 Order ord = OrderList.Items.FirstOrDefault(o => o.OrderId == id);

@@ -55,19 +55,19 @@ namespace InventoryManagement.Tests.Controllers
         }
 
         [Test]
-        public void Get_LoadProductsFromInventory()
+        public async Task Get_LoadProductsFromInventory()
         {
             // Arrange
-            _inventory=_manager.Load();
+            _inventory=await _manager.Load();
             // Act
-            Inventory TestInventory= _controller.ShowInventoryProducts();
+            Inventory TestInventory= await _controller.ShowInventoryProducts();
 
             // Assert
             Assert.IsNotNull(TestInventory);
             _inventory.ShouldDeepEqual(TestInventory);
         }
         [Test]
-        public void Post_AddProductToInventory()
+        public async Task Post_AddProductToInventory()
         {
             // Arrange
             
@@ -75,7 +75,7 @@ namespace InventoryManagement.Tests.Controllers
             _controller.AddProductToInventory(product2);
 
             // Assert
-            _inventory = _manager.Load();
+            _inventory = await _manager.Load();
             Assert.IsNotNull(_inventory);
             var testproduct=_inventory.Products.FirstOrDefault(p=>p.ID==product2.ID);
             Assert.IsNotNull(testproduct,"Product added successfully");
@@ -84,7 +84,7 @@ namespace InventoryManagement.Tests.Controllers
         [Test]
         [TestCase(1001)]
 
-        public void Put_UpdatesProductInInventory(int productId)
+        public async Task Put_UpdatesProductInInventory(int productId)
         {
             // Arrange
                         
@@ -92,7 +92,7 @@ namespace InventoryManagement.Tests.Controllers
             _controller.UpdateProduct(productId, product1);
 
             // Assert
-            _inventory = _manager.Load();
+            _inventory = await _manager.Load();
             Assert.IsNotNull(_inventory);
 
             var TestProduct=_inventory.Products.FirstOrDefault(p=>p.ID== product1.ID);
@@ -107,7 +107,7 @@ namespace InventoryManagement.Tests.Controllers
         }
 
         [TestCase(4)]
-        public void Delete_RemovesProductFromInventory(int productId)
+        public async Task Delete_RemovesProductFromInventory(int productId)
         {
             // Arrange
 
@@ -115,7 +115,7 @@ namespace InventoryManagement.Tests.Controllers
             _controller.DeleteProductFromInventory(productId);
 
             // Assert
-            _inventory = _manager.Load();
+            _inventory = await _manager.Load();
             Assert.IsNotNull(_inventory,"Inventory ins not NULL");
 
             var testProduct =_inventory.Products.Find(p => p.ID == productId);
