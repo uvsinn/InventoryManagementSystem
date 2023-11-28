@@ -1,4 +1,6 @@
 ﻿using InventoryManagementSystem.Models;
+using InventoryManagementSystem.Models.Interfaces;
+using InventoryManagementSystem.Models.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,32 +10,35 @@ namespace InventoryManagementSystem.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        public Manager<Orderlist> orderManager;
-        public Manager<Inventory> inventoryManager;
-        public OrderController()
+        public Imanager<Inventory> InventoryManager;
+        public Imanager<Orderlist> OrderManager;
+        public OrderController(Imanager<Inventory> _InventoryManager, Imanager<Orderlist> _OrderManager)
         {
-            orderManager = new Manager<Orderlist>();
-            inventoryManager = new Manager<Inventory>();
+            InventoryManager = _InventoryManager;
+            OrderManager = _OrderManager;
         }
 
         //GET
         [HttpGet]
+        [BasicAuthentication]
+        [MyAuthorize(Roles = "Admin")]
         public async Task<Orderlist> ShowOrderList()
-
         {
-            Orderlist OrderList = await orderManager.Load();
+            Orderlist OrderList = await OrderManager.Load();
             return OrderList;
         }
 
         //PUT
         [HttpPut]
+        [BasicAuthentication]
+        [MyAuthorize(Roles = "Customer")]
         public async Task UpdateAnOrder(Guid id, [FromBody] Order order)
         {
             try
             {
                 //Loading inventory and orders from json file
-                Orderlist OrderList = await orderManager.Load();
-                Inventory inventory = await inventoryManager.Load();
+                Orderlist OrderList = await OrderManager.Load();
+                Inventory inventory = await InventoryManager.Load();
 
                 //Running a check on the list of orders to check weather the required product exists in the list or not
 
@@ -80,8 +85,8 @@ namespace InventoryManagementSystem.Controllers
 
                 ord.OrderedProduct = order.OrderedProduct;
                 ord.Total_Amount = total;
-                orderManager.Save(OrderList);
-                inventoryManager.Save(inventory);
+                OrderManager.Save(OrderList);
+                InventoryManager.Save(inventory);
             }
             catch(NullReferenceException NRE)
             {
@@ -93,12 +98,14 @@ namespace InventoryManagementSystem.Controllers
 
         //POST
         [HttpPost]
+        [BasicAuthentication]
+        [MyAuthorize(Roles = "Customer")]
         public async Task PlaceAnOrder([FromBody] Order order)
         {
             //Loading inventory and orders from json file
 
-            Inventory inventory = await inventoryManager.Load();
-            Orderlist OrderList = await orderManager.Load();
+            Inventory inventory = await InventoryManager.Load();
+            Orderlist OrderList = await OrderManager.Load();
 
             //Storing the products of placed order in temp to run a check whether those products actually exist in the inventory or not
 
@@ -144,21 +151,23 @@ namespace InventoryManagementSystem.Controllers
             OrderList.Items.Add(order);
 
             //Saving inventory and orders to json file
-            inventoryManager.Save(inventory);
-            orderManager.Save(OrderList);
+            InventoryManager.Save(inventory);
+            OrderManager.Save(OrderList);
         }
 
 
 
         //DELETE
         [HttpDelete]
+        [BasicAuthentication]
+        [MyAuthorize(Roles = "Customer, Admin")]
         public async Task DeleteAnOrder(Guid id)
         {
             try
             {
                 //Loading orders from json file
-                Orderlist OrderList = await orderManager.Load();
-                Inventory inventory = await inventoryManager.Load();
+                Orderlist OrderList = await OrderManager.Load();
+                Inventory inventory = await InventoryManager.Load();
 
                 //Searching the reqired order through the list of orders to perform the delete operation
                 Order ord = OrderList.Items.FirstOrDefault(o => o.OrderId == id);
@@ -176,8 +185,8 @@ namespace InventoryManagementSystem.Controllers
                 OrderList.Items.Remove(ord);
 
                 //Updating orders to json file
-                orderManager.Save(OrderList);
-                inventoryManager.Save(inventory);
+                OrderManager.Save(OrderList);
+                InventoryManager.Save(inventory);
             }
             catch (NullReferenceException)
             {

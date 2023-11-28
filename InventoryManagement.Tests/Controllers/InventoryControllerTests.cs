@@ -1,6 +1,7 @@
 ﻿using DeepEqual.Syntax;
 using InventoryManagementSystem.Controllers;
 using InventoryManagementSystem.Models;
+using InventoryManagementSystem.Models.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework;
@@ -19,14 +20,16 @@ namespace InventoryManagement.Tests.Controllers
     {
         private InventoryController _controller;
         private Inventory _inventory;
-        private Manager<Inventory> _manager;
+        private Imanager<Inventory> _manager;
         Product product1;
         Product product2;
+
         [SetUp]
         public void Setup()
         {
-            _controller = new InventoryController();
-            _manager= new Manager<Inventory>();
+            Imanager<Inventory> _InventoryManager = new Manager<Inventory>();
+            _controller = new InventoryController(_InventoryManager);
+            
             _inventory = new Inventory();
             
             //for POST

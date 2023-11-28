@@ -1,4 +1,6 @@
 ﻿using InventoryManagementSystem.Models;
+using InventoryManagementSystem.Models.Interfaces;
+using InventoryManagementSystem.Models.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,19 +10,20 @@ namespace InventoryManagementSystem.Controllers
     [ApiController]
     public class InventoryController : ControllerBase
     {
-        private Manager<Inventory> manager;
-        public InventoryController()
+        private Imanager<Inventory> InventoryManager;
+        public InventoryController(Imanager<Inventory> _InventoryManager)
         {
-            manager = new Manager<Inventory>();
+            InventoryManager = _InventoryManager;
         }
 
         [HttpGet]
-        
+        [BasicAuthentication]
+        [MyAuthorize(Roles = "Customer,Admin")]
         //GET: api/Product/1001
 
         public async Task<Inventory> ShowInventoryProducts()
         {
-             Inventory inventory = await manager.Load();
+            Inventory inventory = await InventoryManager.Load();
             
             return inventory;
 
@@ -28,15 +31,17 @@ namespace InventoryManagementSystem.Controllers
 
         //POST: api/Product
         [HttpPost]
+        [BasicAuthentication]
+        [MyAuthorize(Roles = "Admin")]
         public async Task AddProductToInventory(Product product)
         {
             try
             {
-                Inventory inventory = await manager.Load();
+                Inventory inventory = await InventoryManager.Load();
                 Product prd = inventory.Products.FirstOrDefault(p => p.ID == product.ID);
 
                 inventory.Products.Add(product);
-                manager.Save(inventory);
+                InventoryManager.Save(inventory);
             }
             catch(NullReferenceException NRE)
             {
@@ -46,11 +51,13 @@ namespace InventoryManagementSystem.Controllers
 
         //PUT: api/Product/1001
         [HttpPut]
+        [BasicAuthentication]
+        [MyAuthorize(Roles = "Admin")]
         public async Task UpdateProduct(int id, [FromBody] Product product)
         {
             try
             {
-                Inventory inventory = await manager.Load();
+                Inventory inventory = await InventoryManager.Load();
                 Product? prd = inventory.Products.FirstOrDefault(p => p.ID == id);
 
                 prd.ID = product.ID;
@@ -59,7 +66,7 @@ namespace InventoryManagementSystem.Controllers
                 prd.Description = product.Description;
                 prd.IsAvailable = product.IsAvailable;
                 prd.Quantity = product.Quantity;
-                manager.Save(inventory);
+                InventoryManager.Save(inventory);
             }
             catch (NullReferenceException NRE)
             {
@@ -68,15 +75,17 @@ namespace InventoryManagementSystem.Controllers
         }
         //DELETE: api/Product/1001
         [HttpDelete]
+        [BasicAuthentication]
+        [MyAuthorize(Roles = "Admin")]
         public async Task DeleteProductFromInventory(int id)
         {
             try
             {
-                Inventory inventory = await manager.Load();
+                Inventory inventory = await InventoryManager.Load();
                 Product prd = inventory.Products.FirstOrDefault(p => p.ID == id);
                 
                 inventory.Products.Remove(prd);
-                manager.Save(inventory);
+                InventoryManager.Save(inventory);
             }
             catch(NullReferenceException NRE)
             {

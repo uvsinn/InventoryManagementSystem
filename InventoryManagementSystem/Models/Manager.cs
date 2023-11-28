@@ -1,10 +1,11 @@
 ﻿using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using System.Text.Json;
+using InventoryManagementSystem.Models.Interfaces;
 
 namespace InventoryManagementSystem.Models
 {
-    public class Manager<T>
+    public class Manager<T>: Imanager<T>
     {
         public string? filename;
 
