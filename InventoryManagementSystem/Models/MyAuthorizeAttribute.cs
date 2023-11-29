@@ -1,4 +1,5 @@
-﻿namespace InventoryManagementSystem.Models
+﻿using HttpContext = CommonServices.HttpContext;
+namespace InventoryManagementSystem.Models
 {
     public class MyAuthorizeAttribute : System.Web.Http.AuthorizeAttribute
     {
@@ -8,14 +9,19 @@
         // operation on the given resource.
         protected override void HandleUnauthorizedRequest(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
-            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+            var identity = HttpContext.Current?.User?.Identity;
+            if (identity != null)
             {
-                base.HandleUnauthorizedRequest(actionContext);
-            }
-            else
-            {
-                actionContext.Response = new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.Forbidden);
-            }
+                bool isAuthenticated = identity.IsAuthenticated;
+                if (!isAuthenticated)
+                {
+                    base.HandleUnauthorizedRequest(actionContext);
+                }
+                else
+                {
+                    actionContext.Response = new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.Forbidden);
+                }
+            }            
         }
     }
 }

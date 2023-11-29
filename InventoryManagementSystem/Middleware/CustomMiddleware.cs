@@ -9,7 +9,7 @@ namespace InventoryManagementSystem.CustomMiddleware
     {
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            await context.Response.WriteAsync("Custom Middleware");
+            await context.Response.WriteAsync("Custom Middleware\n");
             await next(context);
         }
     }

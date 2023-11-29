@@ -43,7 +43,7 @@ namespace InventoryManagementSystem.Controllers
                 inventory.Products.Add(product);
                 InventoryManager.Save(inventory);
             }
-            catch(NullReferenceException NRE)
+            catch(NullReferenceException )
             {
                 Console.WriteLine("A Product with same ID already exists in inventory");
             }
@@ -68,7 +68,7 @@ namespace InventoryManagementSystem.Controllers
                 prd.Quantity = product.Quantity;
                 InventoryManager.Save(inventory);
             }
-            catch (NullReferenceException NRE)
+            catch (NullReferenceException)
             {
                 Console.WriteLine("No such Product Exists in Inventory");
             }
@@ -87,7 +87,7 @@ namespace InventoryManagementSystem.Controllers
                 inventory.Products.Remove(prd);
                 InventoryManager.Save(inventory);
             }
-            catch(NullReferenceException NRE)
+            catch(NullReferenceException)
             {
                 Console.WriteLine("No such Product Exists in Inventory");
             } 

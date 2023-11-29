@@ -18,11 +18,12 @@ namespace InventoryManagement.Tests.Controllers
     [TestFixture]
     public class InventoryControllerTests
     {
-        private InventoryController _controller;
-        private Inventory _inventory;
-        private Imanager<Inventory> _manager;
-        Product product1;
-        Product product2;
+        private InventoryController? _controller;
+        private Inventory? _inventory;
+        private Imanager<Inventory>? _manager;
+        Product? product1;
+        Product? product2;
+
 
         [SetUp]
         public void Setup()
@@ -31,7 +32,10 @@ namespace InventoryManagement.Tests.Controllers
             _controller = new InventoryController(_InventoryManager);
             
             _inventory = new Inventory();
-            
+
+            Imanager<Inventory> _inventoryManager = new Manager<Inventory>();
+            _manager = _inventoryManager;
+
             //for POST
             product2 = new Product
             {
@@ -54,7 +58,6 @@ namespace InventoryManagement.Tests.Controllers
                 IsAvailable = true,
                 Quantity = 80
             };
-
         }
 
         [Test]
