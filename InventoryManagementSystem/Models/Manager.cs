@@ -16,7 +16,7 @@ namespace InventoryManagementSystem.Models
                 filename = "Inventory.json";
             }
             else
-            {
+            { 
                 filename = "OrderHistory.json";
             }
 
@@ -25,7 +25,7 @@ namespace InventoryManagementSystem.Models
                 string jsonString = JsonSerializer.Serialize(ToBeSaved);
                 File.WriteAllText(filename, jsonString);
             }
-            catch (FileNotFoundException)
+            catch (Exception)
             {
                 Console.WriteLine("Create a file and then save the data");
             }

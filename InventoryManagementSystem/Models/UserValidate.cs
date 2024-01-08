@@ -16,6 +16,7 @@
         {
             try
             {
+
                 UsersBL userBL = new UsersBL();
                 return userBL.GetUsers().FirstOrDefault(user =>
                     user.UserName.Equals(username, StringComparison.OrdinalIgnoreCase)

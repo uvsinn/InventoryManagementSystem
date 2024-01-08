@@ -10,7 +10,6 @@
             _mHttpContextAccessor = httpContextAccessor;
         }
 
-
         public static Microsoft.AspNetCore.Http.HttpContext? Current => _mHttpContextAccessor?.HttpContext;
     }
 }

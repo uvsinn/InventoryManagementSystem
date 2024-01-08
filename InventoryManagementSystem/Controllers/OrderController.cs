@@ -12,11 +12,26 @@ namespace InventoryManagementSystem.Controllers
     {
         public Imanager<Inventory> InventoryManager;
         public Imanager<Orderlist> OrderManager;
+
+
+
+
+
+
         public OrderController(Imanager<Inventory> _InventoryManager, Imanager<Orderlist> _OrderManager)
         {
             InventoryManager = _InventoryManager;
             OrderManager = _OrderManager;
         }
+
+
+
+
+
+
+
+
+
 
         //GET
         [HttpGet]
@@ -27,6 +42,15 @@ namespace InventoryManagementSystem.Controllers
             Orderlist OrderList = await OrderManager.Load();
             return OrderList;
         }
+
+
+
+
+
+
+
+
+
 
         //PUT
         [HttpPut]
@@ -96,6 +120,15 @@ namespace InventoryManagementSystem.Controllers
 
 
 
+
+
+
+
+
+
+
+
+
         //POST
         [HttpPost]
         [BasicAuthentication]
@@ -154,6 +187,16 @@ namespace InventoryManagementSystem.Controllers
             InventoryManager.Save(inventory);
             OrderManager.Save(OrderList);
         }
+
+
+
+
+
+
+
+
+
+
 
 
 

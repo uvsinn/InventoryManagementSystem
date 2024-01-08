@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagementSystem",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InventoryManagement.Tests", "InventoryManagement.Tests\InventoryManagement.Tests.csproj", "{2A1F20CE-C77D-4668-9CF5-F2A22CFC41E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonServices", "CommonServices\CommonServices.csproj", "{D49D5BDB-A0AF-4AE5-829E-3E2214722B56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonServices", "CommonServices\CommonServices.csproj", "{D49D5BDB-A0AF-4AE5-829E-3E2214722B56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XunitTestInventory.Tests", "XunitTestInventory.Tests\XunitTestInventory.Tests.csproj", "{361E4774-AA89-4E30-A705-D2A1CBE2EA6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{D49D5BDB-A0AF-4AE5-829E-3E2214722B56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D49D5BDB-A0AF-4AE5-829E-3E2214722B56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D49D5BDB-A0AF-4AE5-829E-3E2214722B56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{361E4774-AA89-4E30-A705-D2A1CBE2EA6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{361E4774-AA89-4E30-A705-D2A1CBE2EA6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{361E4774-AA89-4E30-A705-D2A1CBE2EA6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{361E4774-AA89-4E30-A705-D2A1CBE2EA6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

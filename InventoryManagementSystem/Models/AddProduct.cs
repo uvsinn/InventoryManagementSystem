@@ -8,7 +8,5 @@
         public string? Description { get; set; }
         public bool IsAvailable { get; set; }
         public int Quantity { get; set; }
-
-
     }
 }

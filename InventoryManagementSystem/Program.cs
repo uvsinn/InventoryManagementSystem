@@ -2,6 +2,9 @@
 //The first line creates an object of WebApplicationBuilder with preconfigured defaults using the CreateBuilder() method.
 using CommonServices;
 using InventoryManagementSystem.CustomMiddleware;
+using InventoryManagementSystem.DataAccessLayer;
+using InventoryManagementSystem.Models;
+using InventoryManagementSystem.Models.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using HttpContext = Microsoft.AspNetCore.Http.HttpContext;
 
@@ -19,7 +22,13 @@ builder.Services.AddTransient<CustomMiddleware>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<Imanager<Inventory>, Manager<Inventory>>();
+builder.Services.AddScoped<Imanager<Orderlist>, Manager<Orderlist>>();
+builder.Services.AddScoped<IManagingInventoryDL, ManagingInventoryDL>();
+
 var app = builder.Build();
+//var Inventory = app.Services.GetService<Imanager<Inventory>>();
+
 app.Configure();
 
 
@@ -38,11 +47,7 @@ app.Configure();
 //    await context.Response.WriteAsync("Use swagger to make api calls/n");
 //    await next(context);
 //});
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+
 //app.UseMiddleware<CustomMiddleware>();
 
 //app.Run(async (HttpContext context) =>
@@ -51,6 +56,11 @@ if (app.Environment.IsDevelopment())
 //});
 
 
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 

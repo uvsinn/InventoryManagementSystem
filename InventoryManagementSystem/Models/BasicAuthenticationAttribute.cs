@@ -1,39 +1,42 @@
-﻿using InventoryManagementSystem.Models;
-using System;
+﻿
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using System.Net;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
-using System.Threading;
-using System.Web;
 using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
 
 namespace InventoryManagementSystem.Models.Models
 {
-    public class BasicAuthenticationAttribute : AuthorizationFilterAttribute
+    public class BasicAuthenticationAttribute : Attribute, IAuthorizationFilter
     {
         private const string Realm = "My Realm";
         static Microsoft.AspNetCore.Http.IHttpContextAccessor _mHttpContextAccessor;
-        static Microsoft.AspNetCore.Http.HttpContext Current => _mHttpContextAccessor.HttpContext;
-        public override void OnAuthorization(HttpActionContext actionContext)
+        static Microsoft.AspNetCore.Http.HttpContext Current => _mHttpContextAccessor?.HttpContext;
+        
+        public void OnAuthorization(AuthorizationFilterContext actionContext)
         {
-            if (actionContext.Request.Headers.Authorization == null)
+            string authHeader = actionContext.HttpContext.Request.Headers["Authorization"];
+             
+            string username;
+            string password;
+            if (authHeader != null && authHeader.StartsWith("Basic"))
             {
-                actionContext.Response = actionContext.Request.CreateResponse(HttpStatusCode.Unauthorized);
-                if (actionContext.Response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    actionContext.Response.Headers.Add("WWW-Authenticate", string.Format("Basic realm=\"{0}\"", Realm));
-                }
+                //Extract credentials
+                string encodedUsernamePassword = authHeader.Substring("Basic ".Length).Trim(); Encoding encoding =Encoding.GetEncoding("iso-8859-1");
+                string usernamePassword = encoding.GetString(Convert.FromBase64String(encodedUsernamePassword));
+                int seperatorIndex = usernamePassword.IndexOf(':');
+
+                username = usernamePassword.Substring(0, seperatorIndex);
+                password = usernamePassword.Substring(seperatorIndex + 1);
             }
             else
             {
-                string authenticationToken = actionContext.Request.Headers.Authorization.Parameter;
-                string decodedAuthenticationToken = Encoding.UTF8.GetString(Convert.FromBase64String(authenticationToken));
-                string[] usernamePasswordArray = decodedAuthenticationToken.Split(':');
-                string username = usernamePasswordArray[0];
-                string password = usernamePasswordArray[1];
+                //Handle what happens if that isn't the case
+                throw new Exception("The authorization header is either empty or isn't Basic.");
+            }
                 if (UserValidate.Login(username, password))
                 {
                     var UserDetails = UserValidate.GetUserDetails(username, password);
@@ -45,16 +48,21 @@ namespace InventoryManagementSystem.Models.Models
                     Thread.CurrentPrincipal = principal;
                     if (Current != null)
                     {
-        
+
                         Current.User = (ClaimsPrincipal)principal;
                     }
                 }
                 else
                 {
-                    actionContext.Response = actionContext.Request
-                        .CreateResponse(HttpStatusCode.Unauthorized);
+                    actionContext.Result = new JsonResult("Unauthorized Access")
+                    {
+                        StatusCode = StatusCodes.Status401Unauthorized
+                    };
+
+                    //actionContext.Response = actionContext.HttpContext.Request
+                    //    .CreateResponse(HttpStatusCode.Unauthorized);
                 }
-            }
+         
         }
     }
 }
