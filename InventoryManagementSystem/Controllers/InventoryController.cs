@@ -127,6 +127,14 @@ namespace InventoryManagementSystem.Controllers
             InsertProductResponse response = new InsertProductResponse();
             try
             {
+                if(request.Amount<0)
+                {
+                    throw new Exception("Amount cannot be smaller than zero");
+                }
+                if (request.Quantity < 0)
+                {
+                    throw new Exception("Quantity cannot be smaller than zero");
+                }
                 //Connection between controller and data access layer
                 response = await _managingInventory.InsertProduct(request);
             }
@@ -177,12 +185,20 @@ namespace InventoryManagementSystem.Controllers
             UpdateProductByIdResponse response = new UpdateProductByIdResponse();
             try
             {
+                if(request.Amount<0)
+                {
+                    throw new Exception("Amount cannot be smaller than zero");
+                }
+                if (request.Quantity < 0)
+                {
+                    throw new Exception("Quantity cannot be smaller than zero");
+                }
                 response = await _managingInventory.UpdateProductById(request);
             }
             catch(Exception ex)
             {
                 response.IsSuccess=false;
-                response.message = "Exception" + ex.Message;
+                response.message = "Exception: " + ex.Message;
             }
             return Ok(response);
         }
@@ -194,12 +210,16 @@ namespace InventoryManagementSystem.Controllers
             UpdateAmountByIdResponse response = new UpdateAmountByIdResponse();
             try
             {
+                if (request.Amount < 0)
+                {
+                    throw new Exception("Amount cannot be smaller than zero");
+                }
                 response = await _managingInventory.UpdateAmountById(request);
             }
             catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.message = "Exception" + ex.Message;
+                response.message = "Exception: " + ex.Message;
             }
             return Ok(response);
         }
